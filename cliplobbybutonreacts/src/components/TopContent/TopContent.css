@@ -1,0 +1,39 @@
+.TopContent{
+    height: 400px;
+    max-width: 90%;
+    margin: 30px auto;
+    border: 2px solid var(--corBorders);
+    border-radius: 10px;
+    display: flex;
+    overflow-x: scroll;
+}
+
+
+/* width */
+::-webkit-scrollbar {
+    width: 5px;
+    border-radius: 50px;
+    margin: 10px;
+  }
+
+  
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: #f1f1f1; 
+    border-radius: 120px;
+
+  }
+   
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: var(--corBorders); 
+    border-radius: 50px;
+
+
+  }
+  
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--corTitulos); 
+  }
+

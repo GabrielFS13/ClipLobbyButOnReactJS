@@ -1,0 +1,19 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Roboto', Arial, Helvetica, sans-serif;
+}
+
+:root{
+  --corPrincipal: #1C1F30;
+  --corTitulos: #686227;
+  --corBorders: #3E6B74;
+  --corFontes: #ffffff;
+}
+
+body{
+  background-color: var(--corPrincipal);
+}
