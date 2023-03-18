@@ -9,6 +9,12 @@
     border-bottom: var(--corBorders) 2px solid;
 }
 
+.header .titleLink{
+    text-decoration: none;
+    color: var(--corFontes);
+    font-size: 2rem;
+}
+
 .header nav ul{
     list-style: none;
     display: flex;

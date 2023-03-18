@@ -1,39 +1,48 @@
 .TopContent{
-    height: 400px;
     max-width: 90%;
     margin: 30px auto;
     border: 2px solid var(--corBorders);
     border-radius: 10px;
     display: flex;
-    overflow-x: scroll;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    position: relative;
+}
+
+.TopContent .title{
+  position: absolute;
+  transform: translateX(0);
+  top: -26px;
+  background-color: var(--corPrincipal);
+  padding: 0 5px;
+
 }
 
 
-/* width */
 ::-webkit-scrollbar {
-    width: 5px;
-    border-radius: 50px;
-    margin: 10px;
-  }
+  width: 5px;
+  border-radius: 50px;
+  margin: 10px;
+}
 
   
-  /* Track */
-  ::-webkit-scrollbar-track {
-    background: #f1f1f1; 
-    border-radius: 120px;
-
-  }
-   
-  /* Handle */
-  ::-webkit-scrollbar-thumb {
-    background: var(--corBorders); 
-    border-radius: 50px;
-
-
-  }
+::-webkit-scrollbar-track {
+  background: #f1f1f1; 
+  border-radius: 120px;
+}
   
-  /* Handle on hover */
-  ::-webkit-scrollbar-thumb:hover {
-    background: var(--corTitulos); 
-  }
+::-webkit-scrollbar-thumb {
+  background: var(--corBorders); 
+  border-radius: 50px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--corTitulos); 
+}
 
+
+@media (max-width: 950px){
+  .TopContent{
+      align-items: center;
+  }
+}
