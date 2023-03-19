@@ -3,6 +3,9 @@ import Header from './components/Header';
 
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Index from './components/Index';
+import LoginPage from './components/LoginPage';
+import { GoogleOAuthProvider } from '@react-oauth/google';
+import { useState } from 'react';
 
 
 function App() {
@@ -60,17 +63,21 @@ function App() {
     }
   ]
 
-  console.log(window.location)
+  const [logged, setLogged] = useState()
+
 
   return (
     <BrowserRouter>
-      <div className="App">
-        <Header />
-        <Routes>
-          <Route path='/' element={<Index topDados={topDados} variosDados={variosDados}/>} />
-          <Route path='*' element="404 not found" />
-        </Routes>
-      </div>
+      <GoogleOAuthProvider clientId='480917356542-jhsvt2rjipe0enlunc7iri3gf7fah9t1.apps.googleusercontent.com'>
+        <div className="App">
+          <Header logged = {logged}/>
+          <Routes>
+            <Route path='/' element={<Index topDados={topDados} variosDados={variosDados}/>} />
+            <Route path='/login' element={<LoginPage setLogin = {setLogged}/>} />
+            <Route path='*' element="404 not found" />
+          </Routes>
+        </div>
+      </GoogleOAuthProvider>
     </BrowserRouter>
     
   );
