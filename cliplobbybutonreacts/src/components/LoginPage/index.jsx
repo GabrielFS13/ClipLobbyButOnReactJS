@@ -1,26 +1,126 @@
 import './LoginPage.css'
-import { GoogleLogin,  } from '@react-oauth/google';
+import { getAuth, signInWithPopup, GoogleAuthProvider, FacebookAuthProvider, GithubAuthProvider, getAdditionalUserInfo } from "firebase/auth";
+import { initializeApp } from "firebase/app";
+
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyBGa5gRAgn8NfwzXfdrXYmfdHd_DHzP4tQ",
+  authDomain: "cliplobby-6ab41.firebaseapp.com",
+  projectId: "cliplobby-6ab41",
+  storageBucket: "cliplobby-6ab41.appspot.com",
+  messagingSenderId: "44759321990",
+  appId: "1:44759321990:web:8c23a4dfa6be27286e3007",
+  measurementId: "G-7NFERQY1GK"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
 
 
-export default function LoginPage({setLogin}){
+
+export default function LoginPage({setLogin, logado}){
+
+  const auth = getAuth();
+  const faceProvider = new FacebookAuthProvider();
+  const googleProvider = new GoogleAuthProvider();
+  const gitProvider = new GithubAuthProvider();
+
+
+  function logwithGoogle(){
+    signInWithPopup(auth, googleProvider)
+  .then((result) => {
+    // This gives you a Google Access Token. You can use it to access the Google API.
+    const credential = GoogleAuthProvider.credentialFromResult(result);
+    const token = credential.accessToken;
+    // The signed-in user info.
+    const user = result.user;
+    console.log(user)
+    setLogin({user: user.displayName, email: user.email, photo: user.photoURL})
+    console.log(getAdditionalUserInfo(result))
+
+  }).catch((error) => {
+    // Handle Errors here.
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    // The email of the user's account used.
+    const email = error.customData.email;
+    // The AuthCredential type that was used.
+    const credential = GoogleAuthProvider.credentialFromError(error);
+    // ...
+  });
+  }
+
+  function logwithFacebook(){
+
+    signInWithPopup(auth, faceProvider)
+    .then((result) => {
+      // The signed-in user info.
+      const user = result.user;
+
+      // This gives you a Facebook Access Token. You can use it to access the Facebook API.
+      const credential = FacebookAuthProvider.credentialFromResult(result);
+      const accessToken = credential.accessToken;
+
+      setLogin({user: user.displayName, email: user.email, photo: user.photoURL})
+
+    })
+    .catch((error) => {
+      // Handle Errors here.
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      // The email of the user's account used.
+      const email = error.customData.email;
+      // The AuthCredential type that was used.
+      const credential = FacebookAuthProvider.credentialFromError(error);
+
+      console.log(credential)
+    });
+
+  }
+
+  function logwithGithub(){
+    signInWithPopup(auth, gitProvider)
+  .then((result) => {
+    // This gives you a GitHub Access Token. You can use it to access the GitHub API.
+    const credential = GithubAuthProvider.credentialFromResult(result);
+    const token = credential.accessToken;
+
+    // The signed-in user info.
+    const user = result.user;
     
-async function dados(credential){
-    const id = credential.credential
-    const dado = await fetch(`https://oauth2.googleapis.com/tokeninfo?id_token=${id}`)
-    const infos = await dado.json()
+    console.log(user)
+    const userData = getAdditionalUserInfo(result)
+    console.log()
+    setLogin({user: userData.username, email: user.email, photo: user.photoURL})
 
-    console.log(infos)
-    setLogin(infos.email)
+  }).catch((error) => {
+    // Handle Errors here.
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    // The email of the user's account used.
+    const email = error.customData.email;
+    // The AuthCredential type that was used.
+    const credential = GithubAuthProvider.credentialFromError(error);
+    // ...
+  });
+  }
 
-}
     return(
-        <GoogleLogin
-        onSuccess={credentialResponse => {
-          dados(credentialResponse)
-        }}
-        onError={() => {
-          console.log('Login Failed');
-        }}
-      />
+        <div>
+          {logado ? 
+          "Você já está logado!"
+          :
+          <div>
+            <button onClick={() => logwithGoogle()}>Logar Com Google</button>
+            <button onClick={() => logwithFacebook()}>Logar Com Facebook</button>  
+            <button onClick={() => logwithGithub()}>Logar Com Github</button>  
+          </div>
+
+        }
+        </div>
     )
 }
