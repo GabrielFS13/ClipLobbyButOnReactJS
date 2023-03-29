@@ -1,5 +1,5 @@
 import './LoginPage.css'
-import { getAuth, signInWithPopup, GoogleAuthProvider, FacebookAuthProvider, GithubAuthProvider, getAdditionalUserInfo } from "firebase/auth";
+import { getAuth, signInWithPopup, GoogleAuthProvider, FacebookAuthProvider, GithubAuthProvider, getAdditionalUserInfo, OAuthProvider  } from "firebase/auth";
 import { initializeApp } from "firebase/app";
 
 // TODO: Add SDKs for Firebase products that you want to use
@@ -28,7 +28,7 @@ export default function LoginPage({setLogin, logado}){
   const faceProvider = new FacebookAuthProvider();
   const googleProvider = new GoogleAuthProvider();
   const gitProvider = new GithubAuthProvider();
-
+  const microsoftProvider = new OAuthProvider('microsoft.com');
 
   function logwithGoogle(){
     signInWithPopup(auth, googleProvider)
@@ -109,6 +109,30 @@ export default function LoginPage({setLogin, logado}){
   });
   }
 
+  function logwithMicrosoft(){
+    signInWithPopup(auth, microsoftProvider)
+    .then((result) => {
+      // User is signed in.
+      // IdP data available in result.additionalUserInfo.profile.
+
+      // Get the OAuth access token and ID Token
+      const credential = OAuthProvider.credentialFromResult(result);
+      const accessToken = credential.accessToken;
+      const idToken = credential.idToken;
+      const userData = getAdditionalUserInfo(result)
+
+      console.log(userData)
+
+      setLogin({user: userData.profile.displayName, email: userData.profile.userPrincipalName, photo: "placeholder"})
+
+    })
+    .catch((error) => {
+      // Handle error.
+      console.log(error)
+    });
+
+  }
+
     return(
         <div>
           {logado ? 
@@ -118,6 +142,8 @@ export default function LoginPage({setLogin, logado}){
             <button onClick={() => logwithGoogle()}>Logar Com Google</button>
             <button onClick={() => logwithFacebook()}>Logar Com Facebook</button>  
             <button onClick={() => logwithGithub()}>Logar Com Github</button>  
+            <button onClick={() => logwithMicrosoft()}>Logar Com Microsoft</button>  
+
           </div>
 
         }
